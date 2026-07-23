@@ -1,0 +1,18 @@
+numpy==1.26.4
+fastapi
+uvicorn
+python-multipart>=0.0.6
+paddleocr==3.7.0
+paddlepaddle==3.2.2
+opencv-python
+pillow>=9.0.0
+httpx>=0.24.0
+python-json-logger>=2.0.7
+pydantic-settings>=2.0.0
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+prometheus-fastapi-instrumentator>=6.3.0
+prometheus-client>=0.17.0
+slowapi>=0.1.8
+# NOTE: when running with the LEGACY paddle 2.x stack, protobuf must be
+# pinned <=3.20.3; paddle 3.x has no such constraint.

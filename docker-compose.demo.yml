@@ -1,0 +1,33 @@
+# Demo profile — SELF-CONTAINED image (no code bind-mount): everything the
+# presentation needs is baked in or mounted read-only. Built for the
+# Intel-Mac demo:  docker compose -f docker-compose.demo.yml up -d
+# then open http://localhost:8000/demo
+services:
+  app:
+    build:
+      context: .
+      args:
+        INSTALL_ML: "true"
+    image: ocr-api:demo
+    ports:
+      - "8000:8000"
+    volumes:
+      # runtime artifacts only — code comes from the image
+      - ./models:/models:ro
+      - ./evidence:/app/evidence:ro
+    environment:
+      - FIELD_DETECTOR_STNK_WEIGHTS=/models/stnk_fields.best.pt
+      - FIELD_DETECTOR_KTP_WEIGHTS=/models/ktp_fields.best.pt
+      - ENVIRONMENT=demo
+      - LOG_LEVEL=INFO
+      - ALLOWED_ORIGINS=["*"]
+      - REQUIRE_API_KEY=false
+      - MAX_FILE_SIZE=10485760
+      - REDIS_URL=redis://redis:6379/0
+      - METRICS_ENABLED=true
+    depends_on:
+      - redis
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped

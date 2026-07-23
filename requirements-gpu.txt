@@ -1,0 +1,45 @@
+# GPU wheels — use INSTEAD OF the CPU pins in requirements.txt / requirements-ml.txt
+# when running on a machine with an NVIDIA GPU.
+#
+#   pip install -r requirements.txt -r requirements-gpu.txt
+#
+# and then start the app with PPOCR_USE_GPU=1. Without that env var the code
+# still runs on the CPU no matter what is installed.
+#
+# Two separate frameworks need CUDA, and they are independent:
+#   * PaddlePaddle -> the OCR itself (text detection + recognition). This is the
+#     slow part: 5-190 s per page on this Mac's CPU.
+#   * PyTorch      -> the trained YOLO field detectors (KTP/STNK). Small model;
+#     it benefits, but it is not what makes a page take three minutes.
+
+# --- PaddlePaddle, CUDA build -------------------------------------------------
+# Pick the line matching your CUDA toolkit and DELETE the CPU `paddlepaddle`
+# pin from requirements.txt (installing both leaves the CPU one winning).
+# Check https://www.paddlepaddle.org.cn/en/install/quick for the current index.
+#
+#   CUDA 12.6:
+#     pip install paddlepaddle-gpu==3.2.2 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
+#   CUDA 11.8:
+#     pip install paddlepaddle-gpu==3.2.2 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+#
+# It is deliberately NOT pinned here: the correct wheel depends on the CUDA
+# version on the target box, and a wrong pin fails at import, not at install.
+
+# --- PyTorch, CUDA build ------------------------------------------------------
+# requirements-ml.txt pins the CPU index. Install torch from the CUDA index
+# instead, matching your toolkit:
+#
+#   pip install torch --index-url https://download.pytorch.org/whl/cu126
+#
+ultralytics>=8.4
+
+# --- Verify it is actually on the GPU ----------------------------------------
+#   python -c "import paddle; print('paddle gpu:', paddle.device.is_compiled_with_cuda())"
+#   python -c "import torch;  print('torch  gpu:', torch.cuda.is_available())"
+#
+# Then start the API and confirm the log line says device=gpu:
+#   PPOCR_USE_GPU=1 uvicorn app.main:app --port 8000
+#   -> "PaddleOCR v3 pipeline initialized (lang=en, device=gpu)"
+#
+# If it says device=cpu, the GPU wheel is not installed and the code told you so
+# rather than pretending — check the warning above it in the log.

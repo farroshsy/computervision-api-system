@@ -1,0 +1,1943 @@
+{
+  "info": {
+    "name": "Indonesian Document Verification API",
+    "description": "Driver & vehicle document OCR + verification (KTP/SIM/STNK/KIR).\nSet collection variables `baseUrl` and `apiKey`.\nEvery 4xx/5xx body follows the same ErrorResponse shape.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "apiKey",
+      "value": "your-api-key"
+    }
+  ],
+  "item": [
+    {
+      "name": "General",
+      "item": [
+        {
+          "name": "GET /",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "API Root\n\nRoot endpoint that provides basic information about the API and links to documentation.\n    \n    This is the main entry point for the OCR API service. It provides version information\n    and links to the interactive API documentation."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Metrics",
+      "item": [
+        {
+          "name": "GET /metrics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/metrics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "metrics"
+              ]
+            },
+            "description": "Prometheus Metrics\n\nExpose Prometheus metrics in text-based format.\n    \n    This endpoint provides metrics in Prometheus format for monitoring the application.\n    It's used by Prometheus to scrape application metrics.\n    \n    ### Security\n    - This endpoint is not protected by API key authentication to allow Prometheus scraping.\n    - It can be disabled via the `METRICS_ENABLED` environment variable."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Monitoring",
+      "item": [
+        {
+          "name": "GET /health",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "Health Check\n\nHealth check endpoint that returns the status of the service with version and timestamp.\n    \n    This endpoint can be used by monitoring systems to verify that the API is operational.\n    It returns detailed status information including service health, version, and configuration."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "guidance",
+      "item": [
+        {
+          "name": "GET /api/v1/capture/template",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/capture/template",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "capture",
+                "template"
+              ]
+            },
+            "description": "Per-doctype frame geometry + quality spec for building a guided capture UI\n\n"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/standard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/standard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "standard"
+              ]
+            },
+            "description": "Reference standard (quality criteria) for collecting new document photos\n\n"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "image-match",
+      "item": [
+        {
+          "name": "POST /api/v1/image/fingerprint",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/image/fingerprint",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "image",
+                "fingerprint"
+              ]
+            },
+            "description": "Compute a perceptual fingerprint for an image\n\n",
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          },
+          "response": [
+            {
+              "name": "200 success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/image/fingerprint",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "image",
+                    "fingerprint"
+                  ]
+                },
+                "description": "Compute a perceptual fingerprint for an image\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"fingerprint\": \"v1:9f86d081884c7d65:a3b1c2d4e5f60718\",\n  \"algorithm\": \"dhash+phash-64\"\n}"
+            },
+            {
+              "name": "400 unsupported_type",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/image/fingerprint",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "image",
+                    "fingerprint"
+                  ]
+                },
+                "description": "Compute a perceptual fingerprint for an image\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Unsupported file type: application/zip\",\n  \"detail\": \"Allowed: image/jpeg, image/png, image/webp, application/pdf\"\n}"
+            },
+            {
+              "name": "401 bad_key",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/image/fingerprint",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "image",
+                    "fingerprint"
+                  ]
+                },
+                "description": "Compute a perceptual fingerprint for an image\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid or missing API key\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /api/v1/image/match",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/image/match",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "image",
+                "match"
+              ]
+            },
+            "description": "Match an uploaded image against stored fingerprints\n\n",
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          },
+          "response": [
+            {
+              "name": "200 success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/image/match",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "image",
+                    "match"
+                  ]
+                },
+                "description": "Match an uploaded image against stored fingerprints\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"duplicate_found\": true,\n  \"results\": [\n    {\n      \"fingerprint\": \"v1:9f86d081884c7d65:a3b1c2d4e5f60718\",\n      \"hamming\": 3,\n      \"verdict\": \"duplicate\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "401 bad_key",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/image/match",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "image",
+                    "match"
+                  ]
+                },
+                "description": "Match an uploaded image against stored fingerprints\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid or missing API key\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "logistics",
+      "item": [
+        {
+          "name": "POST /api/v1/logistics/container",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/logistics/container",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "logistics",
+                "container"
+              ]
+            },
+            "description": "Validate ISO 6346 container number (text or photo)\n\n",
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          },
+          "response": [
+            {
+              "name": "200 success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/logistics/container",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "logistics",
+                    "container"
+                  ]
+                },
+                "description": "Validate ISO 6346 container number (text or photo)\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"results\": [\n    {\n      \"container_number\": \"CSQU3054383\",\n      \"valid\": true,\n      \"check_digit\": 3,\n      \"owner_code\": \"CSQ\",\n      \"category\": \"U\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "401 bad_key",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/logistics/container",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "logistics",
+                    "container"
+                  ]
+                },
+                "description": "Validate ISO 6346 container number (text or photo)\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid or missing API key\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "monitoring",
+      "item": [
+        {
+          "name": "GET /api/v1/metrics/fields",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/metrics/fields",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "metrics",
+                "fields"
+              ]
+            },
+            "description": "Get Field Level Metrics\n\nGet field-level extraction metrics (requires authentication)."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/metrics/full",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/metrics/full",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "metrics",
+                "full"
+              ]
+            },
+            "description": "Get All Metrics\n\nGet all available metrics (requires authentication)."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/metrics/health",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/metrics/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "metrics",
+                "health"
+              ]
+            },
+            "description": "Get Health Metrics\n\nGet basic health metrics for the API."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/metrics/ocr",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/metrics/ocr",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "metrics",
+                "ocr"
+              ]
+            },
+            "description": "Get Ocr Metrics Endpoint\n\nGet OCR-specific metrics (requires authentication)."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/metrics/requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/metrics/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "metrics",
+                "requests"
+              ]
+            },
+            "description": "Get Request Metrics\n\nGet detailed request metrics (requires authentication)."
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/metrics/reset",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/metrics/reset",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "metrics",
+                "reset"
+              ]
+            },
+            "description": "Reset Metrics\n\nReset all collected metrics (requires authentication)."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /metrics/fields",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/metrics/fields",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "metrics",
+                "fields"
+              ]
+            },
+            "description": "Get Field Level Metrics\n\nGet field-level extraction metrics (requires authentication)."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /metrics/full",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/metrics/full",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "metrics",
+                "full"
+              ]
+            },
+            "description": "Get All Metrics\n\nGet all available metrics (requires authentication)."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /metrics/health",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/metrics/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "metrics",
+                "health"
+              ]
+            },
+            "description": "Get Health Metrics\n\nGet basic health metrics for the API."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /metrics/ocr",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/metrics/ocr",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "metrics",
+                "ocr"
+              ]
+            },
+            "description": "Get Ocr Metrics Endpoint\n\nGet OCR-specific metrics (requires authentication)."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /metrics/requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/metrics/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "metrics",
+                "requests"
+              ]
+            },
+            "description": "Get Request Metrics\n\nGet detailed request metrics (requires authentication)."
+          },
+          "response": []
+        },
+        {
+          "name": "POST /metrics/reset",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/metrics/reset",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "metrics",
+                "reset"
+              ]
+            },
+            "description": "Reset Metrics\n\nReset all collected metrics (requires authentication)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ocr",
+      "item": [
+        {
+          "name": "GET /api/v1/api/v1/health",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/api/v1/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "api",
+                "v1",
+                "health"
+              ]
+            },
+            "description": "Health Check\n\nHealth check endpoint for monitoring.\n\nReturns:\n    Dict with service status information"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/api/v1/ocr/file",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/api/v1/ocr/file",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "api",
+                "v1",
+                "ocr",
+                "file"
+              ]
+            },
+            "description": "Process document from file upload\n\nProcess an uploaded document image using OCR.\n    \n    This endpoint accepts image files (JPEG, PNG, WebP) containing documents and returns\n    the extracted text along with structured data based on the document type.\n    \n    ### Supported Document Types:\n    - KTP (e-KTP): Indonesian ID card\n    - SIM: Indonesian driver's license\n    - STNK: Indonesian vehicle registration\n    - KIR: Vehicle roadworthiness certificate\n    \n    ### Rate Limiting\n    This endpoint is rate limited. Check response headers for rate limit information.",
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/api/v1/ocr/lines",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/api/v1/ocr/lines",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "api",
+                "v1",
+                "ocr",
+                "lines"
+              ]
+            },
+            "description": "Parse provided OCR lines (no OCR step)\n\nDeveloper utility to test the parsers by sending lines directly. Response data is normalized: data.fields.<key> is an object {value, confidence}.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/api/v1/ocr/url",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/api/v1/ocr/url",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "api",
+                "v1",
+                "ocr",
+                "url"
+              ]
+            },
+            "description": "Process document from URL\n\nProcess a document image from a URL using OCR.\n    \n    This endpoint accepts a publicly accessible URL to an image file (JPEG, PNG, WebP) \n    containing a document and returns the extracted text along with structured data \n    based on the document type.\n    \n    ### Supported Document Types:\n    - KTP (e-KTP): Indonesian ID card\n    - SIM: Indonesian driver's license\n    - STNK: Indonesian vehicle registration\n    - KIR: Vehicle roadworthiness certificate\n    \n    ### Rate Limiting\n    This endpoint is rate limited. Check response headers for rate limit information.\n    \n    ### Security\n    - Only HTTP/HTTPS URLs are allowed\n    - Maximum file size: 10MB\n    - Image dimensions must not exceed 5000x5000 pixels",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/api/v1/ocr/verify",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/api/v1/ocr/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "api",
+                "v1",
+                "ocr",
+                "verify"
+              ]
+            },
+            "description": "Verify uploaded document against claimed identity\n\nUploads an image and compares extracted fields to claimed identity attributes (e.g., NIK, name, DOB). Returns OCR data plus a verification block with score and decision.",
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/health",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "health"
+              ]
+            },
+            "description": "Health Check\n\nHealth check endpoint for monitoring.\n\nReturns:\n    Dict with service status information"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/ocr/file",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/ocr/file",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "ocr",
+                "file"
+              ]
+            },
+            "description": "Process document from file upload\n\nProcess an uploaded document image using OCR.\n    \n    This endpoint accepts image files (JPEG, PNG, WebP) containing documents and returns\n    the extracted text along with structured data based on the document type.\n    \n    ### Supported Document Types:\n    - KTP (e-KTP): Indonesian ID card\n    - SIM: Indonesian driver's license\n    - STNK: Indonesian vehicle registration\n    - KIR: Vehicle roadworthiness certificate\n    \n    ### Rate Limiting\n    This endpoint is rate limited. Check response headers for rate limit information.",
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          },
+          "response": [
+            {
+              "name": "200 success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/ocr/file",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "ocr",
+                    "file"
+                  ]
+                },
+                "description": "Process document from file upload\n\nProcess an uploaded document image using OCR.\n    \n    This endpoint accepts image files (JPEG, PNG, WebP) containing documents and returns\n    the extracted text along with structured data based on the document type.\n    \n    ### Supported Document Types:\n    - KTP (e-KTP): Indonesian ID card\n    - SIM: Indonesian driver's license\n    - STNK: Indonesian vehicle registration\n    - KIR: Vehicle roadworthiness certificate\n    \n    ### Rate Limiting\n    This endpoint is rate limited. Check response headers for rate limit information.",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"document_type\": \"KTP\",\n  \"processing_time\": 3.42,\n  \"timestamp\": \"2026-07-12T10:00:00Z\",\n  \"data\": {\n    \"fields\": {\n      \"nik\": {\n        \"value\": \"3174041708900001\",\n        \"confidence\": 0.98,\n        \"provenance\": {\n          \"method\": \"spatial_pairing\"\n        }\n      },\n      \"nama\": {\n        \"value\": \"BUDI SANTOSO\",\n        \"confidence\": 0.95\n      },\n      \"tanggal_lahir\": {\n        \"value\": \"17-08-1990\",\n        \"confidence\": 0.75,\n        \"provenance\": {\n          \"method\": \"derived_from_nik\"\n        }\n      }\n    },\n    \"validation\": {\n      \"is_probably_valid\": false,\n      \"reasons\": [\n        \"grayscale_possible_photocopy\"\n      ],\n      \"ocr_quality\": 0.91,\n      \"image_quality\": {\n        \"blur_score\": 950.2,\n        \"brightness\": 0.82,\n        \"is_blurry\": false,\n        \"is_too_dark\": false,\n        \"short_side\": 899,\n        \"saturation\": 1.2\n      }\n    }\n  },\n  \"meta\": {\n    \"detection\": {\n      \"doc_type\": \"KTP\",\n      \"scores\": {\n        \"KTP\": 11.0,\n        \"SIM\": 2.0,\n        \"STNK\": 0.0,\n        \"KIR\": 0.0\n      },\n      \"confidence\": 0.87\n    }\n  }\n}"
+            },
+            {
+              "name": "200 wrong_slot",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/ocr/file",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "ocr",
+                    "file"
+                  ]
+                },
+                "description": "Process document from file upload\n\nProcess an uploaded document image using OCR.\n    \n    This endpoint accepts image files (JPEG, PNG, WebP) containing documents and returns\n    the extracted text along with structured data based on the document type.\n    \n    ### Supported Document Types:\n    - KTP (e-KTP): Indonesian ID card\n    - SIM: Indonesian driver's license\n    - STNK: Indonesian vehicle registration\n    - KIR: Vehicle roadworthiness certificate\n    \n    ### Rate Limiting\n    This endpoint is rate limited. Check response headers for rate limit information.",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"document_type\": \"KTP\",\n  \"data\": {\n    \"fields\": {},\n    \"validation\": {\n      \"is_probably_valid\": false,\n      \"reasons\": [\n        \"document_type_mismatch\",\n        \"missing_card_header\"\n      ],\n      \"detected_type\": \"SIM\",\n      \"ocr_quality\": 0.88\n    }\n  },\n  \"_note\": \"declared KTP but the photo is a SIM — re-request the right document\"\n}"
+            },
+            {
+              "name": "400 unsupported_type",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/ocr/file",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "ocr",
+                    "file"
+                  ]
+                },
+                "description": "Process document from file upload\n\nProcess an uploaded document image using OCR.\n    \n    This endpoint accepts image files (JPEG, PNG, WebP) containing documents and returns\n    the extracted text along with structured data based on the document type.\n    \n    ### Supported Document Types:\n    - KTP (e-KTP): Indonesian ID card\n    - SIM: Indonesian driver's license\n    - STNK: Indonesian vehicle registration\n    - KIR: Vehicle roadworthiness certificate\n    \n    ### Rate Limiting\n    This endpoint is rate limited. Check response headers for rate limit information.",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Unsupported file type: application/zip\",\n  \"detail\": \"Allowed: image/jpeg, image/png, image/webp, application/pdf\"\n}"
+            },
+            {
+              "name": "400 undecodable",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/ocr/file",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "ocr",
+                    "file"
+                  ]
+                },
+                "description": "Process document from file upload\n\nProcess an uploaded document image using OCR.\n    \n    This endpoint accepts image files (JPEG, PNG, WebP) containing documents and returns\n    the extracted text along with structured data based on the document type.\n    \n    ### Supported Document Types:\n    - KTP (e-KTP): Indonesian ID card\n    - SIM: Indonesian driver's license\n    - STNK: Indonesian vehicle registration\n    - KIR: Vehicle roadworthiness certificate\n    \n    ### Rate Limiting\n    This endpoint is rate limited. Check response headers for rate limit information.",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Could not decode image\",\n  \"detail\": \"File is corrupt or not an image\"\n}"
+            },
+            {
+              "name": "401 bad_key",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/ocr/file",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "ocr",
+                    "file"
+                  ]
+                },
+                "description": "Process document from file upload\n\nProcess an uploaded document image using OCR.\n    \n    This endpoint accepts image files (JPEG, PNG, WebP) containing documents and returns\n    the extracted text along with structured data based on the document type.\n    \n    ### Supported Document Types:\n    - KTP (e-KTP): Indonesian ID card\n    - SIM: Indonesian driver's license\n    - STNK: Indonesian vehicle registration\n    - KIR: Vehicle roadworthiness certificate\n    \n    ### Rate Limiting\n    This endpoint is rate limited. Check response headers for rate limit information.",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid or missing API key\"\n}"
+            },
+            {
+              "name": "413 too_large",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/ocr/file",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "ocr",
+                    "file"
+                  ]
+                },
+                "description": "Process document from file upload\n\nProcess an uploaded document image using OCR.\n    \n    This endpoint accepts image files (JPEG, PNG, WebP) containing documents and returns\n    the extracted text along with structured data based on the document type.\n    \n    ### Supported Document Types:\n    - KTP (e-KTP): Indonesian ID card\n    - SIM: Indonesian driver's license\n    - STNK: Indonesian vehicle registration\n    - KIR: Vehicle roadworthiness certificate\n    \n    ### Rate Limiting\n    This endpoint is rate limited. Check response headers for rate limit information.",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"File too large\",\n  \"detail\": \"Maximum upload size exceeded\"\n}"
+            },
+            {
+              "name": "422 enforce_failed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/ocr/file",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "ocr",
+                    "file"
+                  ]
+                },
+                "description": "Process document from file upload\n\nProcess an uploaded document image using OCR.\n    \n    This endpoint accepts image files (JPEG, PNG, WebP) containing documents and returns\n    the extracted text along with structured data based on the document type.\n    \n    ### Supported Document Types:\n    - KTP (e-KTP): Indonesian ID card\n    - SIM: Indonesian driver's license\n    - STNK: Indonesian vehicle registration\n    - KIR: Vehicle roadworthiness certificate\n    \n    ### Rate Limiting\n    This endpoint is rate limited. Check response headers for rate limit information.",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Validation failed\",\n  \"detail\": \"enforce_validation=true and document failed validation\",\n  \"reasons\": [\n    \"missing_ktp_markers\",\n    \"nik_pattern_not_found\"\n  ]\n}"
+            },
+            {
+              "name": "429 rate_limited",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/ocr/file",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "ocr",
+                    "file"
+                  ]
+                },
+                "description": "Process document from file upload\n\nProcess an uploaded document image using OCR.\n    \n    This endpoint accepts image files (JPEG, PNG, WebP) containing documents and returns\n    the extracted text along with structured data based on the document type.\n    \n    ### Supported Document Types:\n    - KTP (e-KTP): Indonesian ID card\n    - SIM: Indonesian driver's license\n    - STNK: Indonesian vehicle registration\n    - KIR: Vehicle roadworthiness certificate\n    \n    ### Rate Limiting\n    This endpoint is rate limited. Check response headers for rate limit information.",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Rate limit exceeded: 30 per 1 minute\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /api/v1/ocr/lines",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/ocr/lines",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "ocr",
+                "lines"
+              ]
+            },
+            "description": "Parse provided OCR lines (no OCR step)\n\nDeveloper utility to test the parsers by sending lines directly. Response data is normalized: data.fields.<key> is an object {value, confidence}.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/ocr/url",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/ocr/url",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "ocr",
+                "url"
+              ]
+            },
+            "description": "Process document from URL\n\nProcess a document image from a URL using OCR.\n    \n    This endpoint accepts a publicly accessible URL to an image file (JPEG, PNG, WebP) \n    containing a document and returns the extracted text along with structured data \n    based on the document type.\n    \n    ### Supported Document Types:\n    - KTP (e-KTP): Indonesian ID card\n    - SIM: Indonesian driver's license\n    - STNK: Indonesian vehicle registration\n    - KIR: Vehicle roadworthiness certificate\n    \n    ### Rate Limiting\n    This endpoint is rate limited. Check response headers for rate limit information.\n    \n    ### Security\n    - Only HTTP/HTTPS URLs are allowed\n    - Maximum file size: 10MB\n    - Image dimensions must not exceed 5000x5000 pixels",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/ocr/verify",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/ocr/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "ocr",
+                "verify"
+              ]
+            },
+            "description": "Verify uploaded document against claimed identity\n\nUploads an image and compares extracted fields to claimed identity attributes (e.g., NIK, name, DOB). Returns OCR data plus a verification block with score and decision.",
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "other",
+      "item": [
+        {
+          "name": "POST /ocr/{doc_type}",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ocr/{doc_type}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ocr",
+                "{doc_type}"
+              ]
+            },
+            "description": "Simple Ocr Test Endpoint\n\n",
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "verify",
+      "item": [
+        {
+          "name": "POST /api/v1/verify/document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/verify/document",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "verify",
+                "document"
+              ]
+            },
+            "description": "Verify one document against claimed values\n\n",
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          },
+          "response": [
+            {
+              "name": "200 success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/verify/document",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "verify",
+                    "document"
+                  ]
+                },
+                "description": "Verify one document against claimed values\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"document_type\": \"SIM\",\n  \"decision\": \"no_match\",\n  \"checks\": [\n    {\n      \"field\": \"sim_number\",\n      \"claimed\": \"1427-8708-000059\",\n      \"extracted\": \"1427-8708-000059\",\n      \"status\": \"matched\"\n    },\n    {\n      \"field\": \"name\",\n      \"claimed\": \"JAKA SALMAN\",\n      \"extracted\": \"JAKASALMAN\",\n      \"status\": \"matched\"\n    }\n  ],\n  \"reasons\": [\n    \"sim_expired\"\n  ],\n  \"extracted\": {\n    \"sim_number\": \"1427-8708-000059\",\n    \"name\": \"JAKASALMAN\"\n  },\n  \"lines_read\": 24\n}"
+            },
+            {
+              "name": "200 wrong_slot",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/verify/document",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "verify",
+                    "document"
+                  ]
+                },
+                "description": "Verify one document against claimed values\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"document_type\": \"SIM\",\n  \"decision\": \"needs_review\",\n  \"checks\": [],\n  \"reasons\": [\n    \"wrong_document_type\"\n  ],\n  \"detected_type\": \"KTP\",\n  \"extracted\": {},\n  \"lines_read\": 31,\n  \"_note\": \"photo in the wrong slot is a re-request, never a match or a reject\"\n}"
+            },
+            {
+              "name": "400 unsupported_type",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/verify/document",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "verify",
+                    "document"
+                  ]
+                },
+                "description": "Verify one document against claimed values\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Unsupported file type: application/zip\",\n  \"detail\": \"Allowed: image/jpeg, image/png, image/webp, application/pdf\"\n}"
+            },
+            {
+              "name": "401 bad_key",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/verify/document",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "verify",
+                    "document"
+                  ]
+                },
+                "description": "Verify one document against claimed values\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid or missing API key\"\n}"
+            },
+            {
+              "name": "413 too_large",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/verify/document",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "verify",
+                    "document"
+                  ]
+                },
+                "description": "Verify one document against claimed values\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"File too large\",\n  \"detail\": \"Maximum upload size exceeded\"\n}"
+            },
+            {
+              "name": "429 rate_limited",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/verify/document",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "verify",
+                    "document"
+                  ]
+                },
+                "description": "Verify one document against claimed values\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Rate limit exceeded: 30 per 1 minute\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /api/v1/verify/trip",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/verify/trip",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "verify",
+                "trip"
+              ]
+            },
+            "description": "Dispatch check: SIM + STNK + KIR in one call\n\n",
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          },
+          "response": [
+            {
+              "name": "200 success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/verify/trip",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "verify",
+                    "trip"
+                  ]
+                },
+                "description": "Dispatch check: SIM + STNK + KIR in one call\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"decision\": \"NO_GO\",\n  \"documents\": {\n    \"SIM\": {\n      \"decision\": \"no_match\",\n      \"reasons\": [\n        \"sim_expired\"\n      ],\n      \"checks\": [],\n      \"extracted\": {\n        \"sim_number\": \"1427-8708-000059\"\n      }\n    },\n    \"STNK\": {\n      \"decision\": \"match\",\n      \"reasons\": [],\n      \"checks\": [],\n      \"extracted\": {\n        \"nomor_polisi\": \"B 9437 SRU\"\n      }\n    },\n    \"KIR\": {\n      \"decision\": \"match\",\n      \"reasons\": [],\n      \"checks\": [],\n      \"extracted\": {\n        \"vehicle_id\": \"B 9437 SRU\",\n        \"valid_until\": \"2026-01-01\"\n      }\n    }\n  }\n}"
+            },
+            {
+              "name": "400 unsupported_type",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/verify/trip",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "verify",
+                    "trip"
+                  ]
+                },
+                "description": "Dispatch check: SIM + STNK + KIR in one call\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Unsupported file type: application/zip\",\n  \"detail\": \"Allowed: image/jpeg, image/png, image/webp, application/pdf\"\n}"
+            },
+            {
+              "name": "401 bad_key",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/verify/trip",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "verify",
+                    "trip"
+                  ]
+                },
+                "description": "Dispatch check: SIM + STNK + KIR in one call\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Invalid or missing API key\"\n}"
+            },
+            {
+              "name": "429 rate_limited",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-API-Key",
+                    "value": "{{apiKey}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/verify/trip",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "verify",
+                    "trip"
+                  ]
+                },
+                "description": "Dispatch check: SIM + STNK + KIR in one call\n\n",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                }
+              },
+              "status": "Error",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Rate limit exceeded: 30 per 1 minute\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

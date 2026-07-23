@@ -1,0 +1,6 @@
+# Optional ML profile: trained field detectors (see docs/adr/0001).
+# The base image runs rules-only without these; adding them enables
+# FIELD_DETECTOR_*_WEIGHTS. CPU torch is sufficient for inference.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.4
+ultralytics>=8.4

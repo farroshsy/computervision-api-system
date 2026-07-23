@@ -1,0 +1,49 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - /app/logs
+      # trained field-detector weights (optional ML profile — see
+      # requirements-ml.txt); place best.pt files under ./models
+      - ./models:/models:ro
+      - ./evidence:/app/evidence:ro
+    environment:
+      # enable the trained detectors when weights are present AND the
+      # image was built with requirements-ml.txt
+      - FIELD_DETECTOR_STNK_WEIGHTS=/models/stnk_fields.best.pt
+      - FIELD_DETECTOR_KTP_WEIGHTS=/models/ktp_fields.best.pt
+      - ENVIRONMENT=development
+      - LOG_LEVEL=INFO
+      - ALLOWED_ORIGINS=["*"]
+      - API_KEY=test-api-key
+      - MAX_FILE_SIZE=10485760  # 10MB
+      - REDIS_URL=redis://redis:6379/0
+      - METRICS_ENABLED=true
+    depends_on:
+      - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys,urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5).read(); sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  redis_data:

@@ -1,0 +1,48 @@
+# Secrets — never commit
+.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.pytest_cache/
+
+# Logs and debug artifacts
+*.log
+logs/
+app_logs.txt
+logs.txt
+debug_preproc/
+test_logs/
+
+# Local data — real document images/labels are PII and must stay out
+newdata/
+olddata/
+eval_data/
+*.jpeg
+*.jpg
+*.png
+# logbook/README illustrations only — NEVER real documents (PII)
+!docs/img/*.png
+# runtime-mounted evidence pages (real documents = PII, served at /demo/evidence)
+# A trailing slash matches a directory only. These are just as often symlinks to
+# a store outside the repo — which the slash form does NOT ignore, leaving real
+# identity documents one `git add .` away from a push. Match both forms.
+evidence/
+/evidence
+/models
+
+# OS junk
+.DS_Store
+__MACOSX/
+
+# trained weights (local artifacts; mounted into the container)
+models/
+# base + trained model weights (reproducible; live in ./train_runs)
+*.pt
+
+# benchmark ground-truth labels + OCR outputs = real documents (PII)
+benchmark/truth/
+benchmark/results/
+benchmark/results_v5/
+benchmark/results_*/

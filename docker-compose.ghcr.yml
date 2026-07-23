@@ -1,0 +1,29 @@
+# Pull-and-run profile — uses the pre-built image from GitHub Container
+# Registry. No local build, no source checkout needed beyond this file.
+#
+#   docker compose -f docker-compose.ghcr.yml up -d
+#   open http://localhost:8000/demo
+#
+# The trained YOLO field detectors (STNK plate, KTP) are OFF here because
+# their weights are not shipped in the public image. The API still runs on
+# the rules + spatial-pairing pipeline. To enable the detectors, mount the
+# weights and set FIELD_DETECTOR_*_WEIGHTS (see README).
+services:
+  app:
+    image: ghcr.io/farroshsy/computervision-api-system:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=demo
+      - LOG_LEVEL=INFO
+      - ALLOWED_ORIGINS=["*"]
+      - REQUIRE_API_KEY=false
+      - MAX_FILE_SIZE=10485760
+      - REDIS_URL=redis://redis:6379/0
+      - METRICS_ENABLED=true
+    depends_on:
+      - redis
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
