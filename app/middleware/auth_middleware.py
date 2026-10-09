@@ -16,17 +16,20 @@ class AuthMiddleware(BaseHTTPMiddleware):
     """Middleware to validate API keys for all requests."""
 
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint):
-        # Skip auth for health check, docs, and metrics endpoints
-        excluded_paths = [
-            "/",  # Root endpoint
+        # Skip auth for health check, docs, and metrics endpoints.
+        # "/" must match exactly: every path starts with "/", so a prefix
+        # match on it would exempt the whole API from authentication.
+        path = request.url.path
+        excluded_exact = {"/"}
+        excluded_prefixes = (
             "/health",
             "/docs",
             "/openapi.json",
             "/redoc",
-            "/metrics"  # Allow Prometheus to scrape metrics without authentication
-        ]
-        
-        if any(request.url.path.startswith(path) for path in excluded_paths):
+            "/metrics",  # Allow Prometheus to scrape metrics without authentication
+        )
+
+        if path in excluded_exact or path.startswith(excluded_prefixes):
             return await call_next(request)
 
         # Get API key from header
