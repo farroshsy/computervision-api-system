@@ -1,13 +1,16 @@
 """Pytest configuration and fixtures."""
 import os
+
+# Must run before app.config is imported: settings are read once, at import.
+# (Set after the import, these were silently ignored — masked until the auth
+# middleware stopped exempting every route.)
+os.environ["REQUIRE_API_KEY"] = "false"  # Disable auth for tests
+os.environ["RATE_LIMIT_ENABLED"] = "false"  # Disable rate limiting for tests
+
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app
 from app.config import settings
-
-# Set up test environment variables
-os.environ["REQUIRE_API_KEY"] = "false"  # Disable auth for tests
-os.environ["RATE_LIMIT_ENABLED"] = "false"  # Disable rate limiting for tests
 
 @pytest.fixture(scope="module")
 def test_client():
