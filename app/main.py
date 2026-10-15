@@ -170,8 +170,8 @@ app.add_middleware(TimingMiddleware)
 # 5. Set up Prometheus metrics
 setup_metrics(app)
 
-# Include routers
-app.include_router(ocr_router, prefix="/api/v1")
+# Include routers. The OCR router carries its own /api/v1 prefix (included
+# further down); monitoring has none, so it gets /api/v1 here.
 app.include_router(monitoring_router, prefix="/api/v1")
 
 # Custom exception handlers
@@ -419,9 +419,8 @@ app.router.lifespan_context = lifespan  # type: ignore[attr-defined]
 async def simple_ocr_test_endpoint(doc_type: str, file: UploadFile | None = File(None)):
     return {"doc_type": doc_type}
 
-# Include routers
+# Include routers (monitoring is included once, with its prefix, above)
 app.include_router(ocr_router)
-app.include_router(monitoring_router)
 
 # Image fingerprint/duplicate-check endpoints (stateless; router carries
 # its own /api/v1/image prefix)
