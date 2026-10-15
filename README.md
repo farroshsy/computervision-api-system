@@ -10,6 +10,10 @@ Design decisions, per-doctype method map, and measured accuracy:
 see [docs/METHOD_BY_DOCTYPE.md](docs/METHOD_BY_DOCTYPE.md) and
 [docs/RFC.md](docs/RFC.md).
 
+![Demo: a SIM is extracted, checked against the claim and rejected as expired, with the reason](docs/img/demo.gif)
+
+<sub>Every card in the demo is synthetic (fake data); every field and decision shown is a real response from the running API.</sub>
+
 ## 🐳 Run the pre-built image (fastest)
 
 Pull the image from GitHub Container Registry and start it — no build, no
